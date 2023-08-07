@@ -120,7 +120,7 @@
             <option value="9">9</option>
             <option value="10">10</option>
         </select>
-        <div id="children-dropdown">
+        
         <label for="children">Children (6-12 yrs, €6 each):</label>
         <select id="children" name="children" onchange="updateParticipants();">
             <!-- Options for children -->
@@ -136,8 +136,8 @@
             <option value="9">9</option>
             <option value="10">10</option>
         </select>
-        </div>
-        <div id="kids-dropdown">
+
+        
         <label for="kids">Kids (under 6, free):</label>
         <select id="kids" name="kids" onchange="updateParticipants();">
             <!-- Options for kids -->
@@ -153,7 +153,6 @@
             <option value="9">9</option>
             <option value="10">10</option>
         </select>
-        </div>
 
         <label for="email">Email Address:</label>
         <input type="email" id="email" name="email" required placeholder="Enter your email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
@@ -190,32 +189,21 @@
         <script>
             function updateRegistrationType() {
                 var registrationType = document.getElementById('registrationType').value;
-                var checkInQuestion = document.getElementById('checkInQuestion');
                 var adultsSelect = document.getElementById('adults');
                 var childrenSelect = document.getElementById('children');
                 var kidsSelect = document.getElementById('kids');
 
                 if (registrationType === "Individual") {
-                    checkInQuestion.style.display = 'none';
-                    adultsSelect.value = '1'; // Set adults to 1 for Individual
-                    adultsSelect.disabled = true; // Disable adults selection for Individual
-                    childrenSelect.value = '0'; // Set children to 0 for Individual
-                    kidsSelect.value = '0'; // Set kids to 0 for Individual
-                    document.getElementById('children-section').style.display = 'none'; // Hide children section
-                    document.getElementById('kids-section').style.display = 'none'; // Hide kids section
-                    document.getElementById('children-dropdown').style.display = 'none'; // Hide children dropdown
-                    document.getElementById('kids-dropdown').style.display = 'none'; // Hide kids dropdown
+                    adultsSelect.value = '1';
+                    adultsSelect.disabled = true;
+                    childrenSelect.value = '0';
+                    kidsSelect.value = '0';
 
                     // Make children and kids dropdown read-only
                     childrenSelect.setAttribute('disabled', 'disabled');
                     kidsSelect.setAttribute('disabled', 'disabled');
                 } else {
-                    checkInQuestion.style.display = 'block';
-                    adultsSelect.disabled = false; // Enable adults selection for Family/Group
-                    document.getElementById('children-section').style.display = 'block'; // Show children section
-                    document.getElementById('kids-section').style.display = 'block'; // Show kids section
-                    document.getElementById('children-dropdown').style.display = 'block'; // Show children dropdown
-                    document.getElementById('kids-dropdown').style.display = 'block'; // Show kids dropdown
+                    adultsSelect.disabled = false;
 
                     // Enable children and kids dropdown
                     childrenSelect.removeAttribute('disabled');
@@ -224,9 +212,6 @@
 
                 updateParticipants(); // Update the participant fields
             }
-
-
-            
 
             function updateParticipants() {
                 var adults = parseInt(document.getElementById('adults').value, 10);
@@ -239,11 +224,6 @@
                 createParticipantFields('kids', registrationType === 'Individual' ? 0 : kids, 'Kid');
                 calculateAmount(adults, children, kids);
 
-                // Hide children and kids sections if registration type is Individual
-                if (registrationType === 'Individual') {
-                    document.getElementById('children-section').style.display = 'none';
-                    document.getElementById('kids-section').style.display = 'none';
-                }
             }
 
 
