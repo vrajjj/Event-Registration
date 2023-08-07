@@ -372,29 +372,32 @@
               }
 
             function allFieldsFilled() {
-                // Check the number of adults, children, and kids
-                if (!document.getElementById('adults').value || !document.getElementById('children').value ||
-                    !document.getElementById('kids').value) {
-                    return false;
-                }
+            // Check the number of adults, children, and kids
+            if (!document.getElementById('adults').value || !document.getElementById('children').value ||
+                !document.getElementById('kids').value) {
+                return false;
+            }
 
-                // Check participants' names
-                var sections = ['adults', 'children', 'kids'];
-                for (var i = 0; i < sections.length; i++) {
-                    var inputs = document.getElementById(sections[i] + '-section').getElementsByTagName('input');
+            // Check participants' names
+            var sections = ['adults', 'children', 'kids'];
+            for (var i = 0; i < sections.length; i++) {
+                var section = document.getElementById(sections[i] + '-section');
+                if (section.style.display !== 'none') { // Only check if the section is visible
+                    var inputs = section.getElementsByTagName('input');
                     for (var j = 0; j < inputs.length; j++) {
                         if (!inputs[j].value) {
                             return false;
                         }
                     }
                 }
+            }
 
-                // Check the email
-                if (!document.getElementById('email').value) {
-                    return false;
-                }
+            // Check the email
+            if (!document.getElementById('email').value) {
+                return false;
+            }
 
-                return true;
+            return true;
             }
 
             function collectParticipants(sectionId, count, participants, type) {
