@@ -185,21 +185,30 @@
 
         <script>
             function updateRegistrationType() {
-            var registrationType = document.getElementById('registrationType').value;
-            var checkInQuestion = document.getElementById('checkInQuestion');
-            var adultsSelect = document.getElementById('adults');
+                var registrationType = document.getElementById('registrationType').value;
+                var checkInQuestion = document.getElementById('checkInQuestion');
+                var adultsSelect = document.getElementById('adults');
+                var childrenSelect = document.getElementById('children');
+                var kidsSelect = document.getElementById('kids');
 
-            if (registrationType === "Individual") {
-                checkInQuestion.style.display = 'none';
-                adultsSelect.value = '1'; // Set adults to 1 for Individual
-                adultsSelect.disabled = true; // Disable adults selection for Individual
-            } else {
-                checkInQuestion.style.display = 'block';
-                adultsSelect.disabled = false; // Enable adults selection for Family/Group
+                if (registrationType === "Individual") {
+                    checkInQuestion.style.display = 'none';
+                    adultsSelect.value = '1'; // Set adults to 1 for Individual
+                    adultsSelect.disabled = true; // Disable adults selection for Individual
+                    childrenSelect.value = '0'; // Set children to 0 for Individual
+                    kidsSelect.value = '0'; // Set kids to 0 for Individual
+                    document.getElementById('children-section').style.display = 'none'; // Hide children section
+                    document.getElementById('kids-section').style.display = 'none'; // Hide kids section
+                } else {
+                    checkInQuestion.style.display = 'block';
+                    adultsSelect.disabled = false; // Enable adults selection for Family/Group
+                    document.getElementById('children-section').style.display = 'block'; // Show children section
+                    document.getElementById('kids-section').style.display = 'block'; // Show kids section
+                }
+
+                updateParticipants(); // Update the participant fields
             }
 
-            updateParticipants(); // Update the participant fields
-        }
             
 
             function updateParticipants() {
