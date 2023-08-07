@@ -214,6 +214,8 @@
                     document.getElementById('kids-section').style.display = registrationType === 'Individual' ? 'none' : 'block';
 
                     checkInQuestion.style.display = 'none'; // Hide the checkInQuestion div for Individual
+                    // Reset the cost for Individual registration
+                    calculateAmount(1, 0, 0); // 1 adult, 0 children, 0 kids
                 } else {
                     adultsSelect.disabled = false;
 
