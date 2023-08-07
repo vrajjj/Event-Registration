@@ -215,12 +215,14 @@
                 var adults = parseInt(document.getElementById('adults').value, 10);
                 var children = parseInt(document.getElementById('children').value, 10);
                 var kids = parseInt(document.getElementById('kids').value, 10);
+                var registrationType = document.getElementById('registrationType').value;
 
                 createParticipantFields('adults', adults, 'Adult');
-                createParticipantFields('children', children, 'Child');
-                createParticipantFields('kids', kids, 'Kid');
+                createParticipantFields('children', registrationType === 'Individual' ? 0 : children, 'Child');
+                createParticipantFields('kids', registrationType === 'Individual' ? 0 : kids, 'Kid');
                 calculateAmount(adults, children, kids);
             }
+
 
             function createParticipantFields(sectionId, count, label) {
             var section = document.getElementById(sectionId + '-section');
