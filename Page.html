@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        label,
+        select {
+            display: block;
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .participant-section {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .name-fields {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="button"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+            display: block;
+        }
+
+        input[type="button"]:hover {
+            background-color: #45a049;
+        }
+
+        .confirmation-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .paypal-link {
+            color: #0070ba;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        @media (min-width: 600px) {
+            .name-fields {
+                flex-direction: row;
+            }
+
+            input[type="text"] {
+                width: 45%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <form id="registrationForm">
+        <label for="registrationType">Registration Type:</label>
+        <select id="registrationType" name="registrationType" onchange="updateRegistrationType();">
+            <option value="Individual">Individual</option>
+            <option value="Family/Group">Family/Group</option>
+        </select>
+        <div id="checkInQuestion" style="display: none;">
+            <label for="checkInTogether">Will all the participants check in together or separately?</label>
+            <select id="checkInTogether" name="checkInTogether" onchange="updateCheckInQuestion();">
+                <option value="Together">Together</option>
+                <option value="Separately">Separately</option>
+            </select>
+        </div>
+        <label for="adults">Adults (€10 each):</label>
+        <select id="adults" name="adults" onchange="updateParticipants();">
+            <!-- Options for adults -->
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <label for="children">Children (6-12 yrs, €6 each):</label>
+        <select id="children" name="children" onchange="updateParticipants();">
+            <!-- Options for children -->
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <label for="kids">Kids (under 6, free):</label>
+        <select id="kids" name="kids" onchange="updateParticipants();">
+            <!-- Options for kids -->
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" required placeholder="Enter your email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+        <span id="emailError" style="color: red; display: none;">Please enter a valid email address.</span>
+        
+        <label for="amount">Total Amount:</label>
+        <input type="text" id="amount" name="amount" readonly>
+
+        <div id="adults-section" class="participant-section">
+            <div class="section-title">Adults</div>
+            <!-- Adults Fields -->
+        </div>
+        <div id="children-section" class="participant-section">
+            <div class="section-title">Children</div>
+            <!-- Children Fields -->
+        </div>
+        <div id="kids-section" class="participant-section">
+            <div class="section-title">Kids</div>
+            <!-- Kids Fields -->
+        </div>
+
+        <input type="button" value="Submit" onclick="submitForm()">
+    </form>
+
+        <div id="confirmationMessage" class="confirmation-message">
+            <h2>Thank You!</h2>
+            <p>Your registration has been submitted successfully.</p>
+            <p>Total Amount: <span id="totalAmountConfirmation"></span></p>
+            <p>Reference Number: <span id="referenceNumber"></span> <button onclick="copyToClipboard()">Copy</button></p> <!-- Include the reference number -->
+            <p>Please transfer the total amount via PayPal to this ID: <a href="https://paypal.me/GujaratiFranconia" target="_blank" class="paypal-link">paypal.me/GujaratiFranconia</a></p>
+        </div>
+
+
+        <script>
+            function updateRegistrationType() {
+                var registrationType = document.getElementById('registrationType').value;
+                var checkInQuestion = document.getElementById('checkInQuestion');
+
+                if (registrationType === "Family/Group") {
+                    checkInQuestion.style.display = 'block';
+                } else {
+                    checkInQuestion.style.display = 'none';
+                }
+
+                updateParticipants();
+            }
+            
+
+            function updateParticipants() {
+                var adults = parseInt(document.getElementById('adults').value, 10);
+                var children = parseInt(document.getElementById('children').value, 10);
+                var kids = parseInt(document.getElementById('kids').value, 10);
+
+                createParticipantFields('adults', adults, 'Adult');
+                createParticipantFields('children', children, 'Child');
+                createParticipantFields('kids', kids, 'Kid');
+                calculateAmount(adults, children, kids);
+            }
+
+            function createParticipantFields(sectionId, count, label) {
+            var section = document.getElementById(sectionId + '-section');
+            var existingCount = section.getElementsByClassName('name-fields').length;
+            var checkInTogether = document.getElementById('checkInTogether').value;
+
+            if (count > existingCount) {
+                for (var i = existingCount; i < count; i++) {
+                    var nameFields = document.createElement('div');
+                    nameFields.className = 'name-fields';
+                    nameFields.innerHTML = '<input type="text" placeholder="First Name of ' + label + ' ' + (i + 1) +
+                        '" required><input type="text" placeholder="Last Name of ' + label + ' ' + (i + 1) +
+                        '" required>';
+                    if (sectionId !== 'kids-section' && checkInTogether === 'Separately') {
+                        nameFields.innerHTML += '<input type="email" placeholder="Email of ' + label + ' ' + (i + 1) +
+                            '" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$">';
+                    }
+                    section.appendChild(nameFields);
+                }
+            } else if (count < existingCount) {
+                for (var i = existingCount - 1; i >= count; i--) {
+                    section.removeChild(section.getElementsByClassName('name-fields')[i]);
+                }
+            }
+
+            section.style.display = count > 0 ? 'block' : 'none';
+            }
+
+            function updateCheckInQuestion() {
+            // Code to handle changes related to the check-in question
+            updateParticipants(); // This will recreate the fields based on the check-in question
+            }
+
+            function calculateAmount(adults, children, kids) {
+                var amount = (adults * 10) + (children * 6);
+                var amountString = adults + " adults, " + children + " children, " + kids + " kids - €" + amount;
+                document.getElementById('amount').value = amountString;
+            }
+
+            function submitForm() {
+                if (!validateForm()) {
+                    return;
+                }
+
+                var adults = parseInt(document.getElementById('adults').value, 10);
+                var children = parseInt(document.getElementById('children').value, 10);
+                var kids = parseInt(document.getElementById('kids').value, 10);
+                var amount = (adults * 10) + (children * 6);
+                var participants = [];
+                var email = document.getElementById('email').value;
+                var registrationType = document.getElementById('registrationType').value;
+                var checkInTogether = document.getElementById('checkInTogether').value;
+
+                collectParticipants('adults', adults, participants, 'Adult');
+                collectParticipants('children', children, participants, 'Child');
+                collectParticipants('kids', kids, participants, 'Kid');
+
+                google.script.run.withSuccessHandler(function(referenceNumber) { // Use the returned reference number
+                    document.getElementById('registrationForm').style.display = 'none';
+                    document.getElementById('confirmationMessage').style.display = 'block';
+                    document.getElementById('totalAmountConfirmation').textContent = '€' + amount;
+                    document.getElementById('referenceNumber').textContent = referenceNumber; // Show the reference number
+                }).processForm(registrationType, checkInTogether, adults, children, kids, amount, participants, email);
+            }
+
+
+            function validateForm() {
+            var emailInput = document.getElementById('email');
+            var emailError = document.getElementById('emailError');
+
+            // Reset error messages
+            emailError.style.display = 'none';
+
+            // Email validation
+            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(emailInput.value)) {
+                emailError.style.display = 'block';
+                return false;
+            }
+
+            // Required fields validation
+            if (!allFieldsFilled()) {
+                alert('Please fill out all the required fields.');
+                return false;
+            }
+
+            return true;
+            }
+
+            // Function to copy the reference number to clipboard
+              function copyToClipboard() {
+                  var referenceNumber = document.getElementById('referenceNumber').textContent;
+                  var textArea = document.createElement('textarea');
+                  textArea.value = referenceNumber;
+                  document.body.appendChild(textArea);
+                  textArea.select();
+                  document.execCommand('copy');
+                  document.body.removeChild(textArea);
+                  alert('Reference number copied to clipboard!');
+              }
+
+            function allFieldsFilled() {
+                // Check the number of adults, children, and kids
+                if (!document.getElementById('adults').value || !document.getElementById('children').value ||
+                    !document.getElementById('kids').value) {
+                    return false;
+                }
+
+                // Check participants' names
+                var sections = ['adults', 'children', 'kids'];
+                for (var i = 0; i < sections.length; i++) {
+                    var inputs = document.getElementById(sections[i] + '-section').getElementsByTagName('input');
+                    for (var j = 0; j < inputs.length; j++) {
+                        if (!inputs[j].value) {
+                            return false;
+                        }
+                    }
+                }
+
+                // Check the email
+                if (!document.getElementById('email').value) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            function collectParticipants(sectionId, count, participants, type) {
+            if (count > 0) {
+                var inputs = document.getElementById(sectionId + '-section').getElementsByTagName('input');
+                for (var i = 0; i < count; i++) {
+                    var firstName = inputs[i * (sectionId === 'kids-section' ? 2 : 3)].value;
+                    var lastName = inputs[i * (sectionId === 'kids-section' ? 2 : 3) + 1].value;
+                    var email = sectionId === 'kids-section' ? '' : inputs[i * 3 + 2].value;
+                    participants.push({
+                        type: type,
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email // Include email if applicable
+                    });
+                }
+            }
+        }
+
+            // Initialize the form
+            updateParticipants();
+        </script>
+    
+</body>
+
+</html>
