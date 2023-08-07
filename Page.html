@@ -120,6 +120,7 @@
             <option value="9">9</option>
             <option value="10">10</option>
         </select>
+        <div id="children-dropdown">
         <label for="children">Children (6-12 yrs, €6 each):</label>
         <select id="children" name="children" onchange="updateParticipants();">
             <!-- Options for children -->
@@ -135,6 +136,8 @@
             <option value="9">9</option>
             <option value="10">10</option>
         </select>
+        </div>
+        <div id="kids-dropdown">
         <label for="kids">Kids (under 6, free):</label>
         <select id="kids" name="kids" onchange="updateParticipants();">
             <!-- Options for kids -->
@@ -150,6 +153,7 @@
             <option value="9">9</option>
             <option value="10">10</option>
         </select>
+        </div>
 
         <label for="email">Email Address:</label>
         <input type="email" id="email" name="email" required placeholder="Enter your email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
@@ -199,11 +203,15 @@
                     kidsSelect.value = '0'; // Set kids to 0 for Individual
                     document.getElementById('children-section').style.display = 'none'; // Hide children section
                     document.getElementById('kids-section').style.display = 'none'; // Hide kids section
+                    document.getElementById('children-dropdown').style.display = 'none'; // Hide children dropdown
+                    document.getElementById('kids-dropdown').style.display = 'none'; // Hide kids dropdown
                 } else {
                     checkInQuestion.style.display = 'block';
                     adultsSelect.disabled = false; // Enable adults selection for Family/Group
                     document.getElementById('children-section').style.display = 'block'; // Show children section
                     document.getElementById('kids-section').style.display = 'block'; // Show kids section
+                    document.getElementById('children-dropdown').style.display = 'block'; // Show children dropdown
+                    document.getElementById('kids-dropdown').style.display = 'block'; // Show kids dropdown
                 }
 
                 updateParticipants(); // Update the participant fields
