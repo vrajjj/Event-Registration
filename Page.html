@@ -245,7 +245,7 @@
                             '" required>';
                         if (sectionId !== 'kids-section' && (checkInTogether === 'Separately' || (sectionId === 'adults-section' && i === 0))) {
                             nameFields.innerHTML += '<input type="email" placeholder="Email of ' + label + ' ' + (i + 1) +
-                                '" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}$">';
+                                '" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\\\\\.[a-zA-Z]{2,}$">';
                         }
                         section.appendChild(nameFields);
                     }
@@ -255,10 +255,26 @@
                     }
                 }
 
+                // Update existing fields based on the checkInTogether value
+                for (var i = 0; i < existingCount; i++) {
+                    var nameFields = section.getElementsByClassName('name-fields')[i];
+                    var emailInput = nameFields.getElementsByTagName('input')[2];
+                    if (sectionId !== 'kids-section' && (checkInTogether === 'Separately' || (sectionId === 'adults-section' && i === 0))) {
+                        if (!emailInput) {
+                            emailInput = document.createElement('input');
+                            emailInput.type = 'email';
+                            emailInput.placeholder = 'Email of ' + label + ' ' + (i + 1);
+                            emailInput.required = true;
+                            emailInput.pattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\\\\\.[a-zA-Z]{2,}$';
+                            nameFields.appendChild(emailInput);
+                        }
+                    } else if (emailInput) {
+                        nameFields.removeChild(emailInput);
+                    }
+                }
+
                 section.style.display = count > 0 ? 'block' : 'none';
             }
-
-
 
             function updateCheckInQuestion() {
             // Code to handle changes related to the check-in question
