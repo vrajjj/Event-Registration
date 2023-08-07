@@ -89,6 +89,7 @@
                 width: 30%;
             }
         }
+        
     </style>
 </head>
 
@@ -160,7 +161,12 @@
         <span id="emailError" style="color: red; display: none;">Please enter a valid email address.</span>
         
         <label for="amount">Total Amount:</label>
-        <input type="text" id="amount" name="amount" readonly>
+        <div id="amount-details">
+            Adults - <span id="adults-count">2</span> - €<span id="adults-amount">20</span><br>
+            Children - <span id="children-count">1</span> - €<span id="children-amount">6</span><br>
+            Kid - <span id="kids-count">0</span> - €<span id="kids-amount">0</span><br>
+            Total: €<span id="total-amount">26</span>
+        </div>
 
         <div id="adults-section" class="participant-section">
             <div class="section-title">Adults</div>
@@ -284,10 +290,19 @@
             }
 
             function calculateAmount(adults, children, kids) {
-                var amount = (adults * 10) + (children * 6);
-                var amountString = adults + " adults, " + children + " children, " + kids + " kids - €" + amount;
-                document.getElementById('amount').value = amountString;
+                var adultsAmount = adults * 10;
+                var childrenAmount = children * 6;
+                var totalAmount = adultsAmount + childrenAmount;
+
+                document.getElementById('adults-count').textContent = adults;
+                document.getElementById('adults-amount').textContent = adultsAmount;
+                document.getElementById('children-count').textContent = children;
+                document.getElementById('children-amount').textContent = childrenAmount;
+                document.getElementById('kids-count').textContent = kids;
+                document.getElementById('kids-amount').textContent = 0;
+                document.getElementById('total-amount').textContent = totalAmount;
             }
+
 
             function submitForm() {
                 if (!validateForm()) {
