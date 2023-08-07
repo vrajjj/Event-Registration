@@ -59,6 +59,14 @@
             background-color: #45a049;
         }
 
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
         .confirmation-message {
             display: none;
             text-align: center;
@@ -76,8 +84,9 @@
                 flex-direction: row;
             }
 
-            input[type="text"] {
-                width: 45%;
+            input[type="text"],
+            input[type="email"] {
+                width: 30%;
             }
         }
     </style>
@@ -212,7 +221,7 @@
                     nameFields.innerHTML = '<input type="text" placeholder="First Name of ' + label + ' ' + (i + 1) +
                         '" required><input type="text" placeholder="Last Name of ' + label + ' ' + (i + 1) +
                         '" required>';
-                    if (sectionId !== 'kids-section' && checkInTogether === 'Separately') {
+                    if (sectionId !== 'kids-section' && (checkInTogether === 'Separately' || (sectionId === 'adults-section' && i === 0))) {
                         nameFields.innerHTML += '<input type="email" placeholder="Email of ' + label + ' ' + (i + 1) +
                             '" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$">';
                     }
@@ -225,7 +234,7 @@
             }
 
             section.style.display = count > 0 ? 'block' : 'none';
-            }
+        }
 
             function updateCheckInQuestion() {
             // Code to handle changes related to the check-in question
