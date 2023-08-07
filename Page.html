@@ -210,6 +210,9 @@
                     childrenSelect.setAttribute('disabled', 'disabled');
                     kidsSelect.setAttribute('disabled', 'disabled');
 
+                    document.getElementById('children-section').style.display = registrationType === 'Individual' ? 'none' : 'block';
+                    document.getElementById('kids-section').style.display = registrationType === 'Individual' ? 'none' : 'block';
+
                     checkInQuestion.style.display = 'none'; // Hide the checkInQuestion div for Individual
                 } else {
                     adultsSelect.disabled = false;
