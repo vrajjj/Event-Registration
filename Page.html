@@ -205,6 +205,10 @@
                     document.getElementById('kids-section').style.display = 'none'; // Hide kids section
                     document.getElementById('children-dropdown').style.display = 'none'; // Hide children dropdown
                     document.getElementById('kids-dropdown').style.display = 'none'; // Hide kids dropdown
+
+                    // Make children and kids dropdown read-only
+                    childrenSelect.setAttribute('disabled', 'disabled');
+                    kidsSelect.setAttribute('disabled', 'disabled');
                 } else {
                     checkInQuestion.style.display = 'block';
                     adultsSelect.disabled = false; // Enable adults selection for Family/Group
@@ -212,10 +216,15 @@
                     document.getElementById('kids-section').style.display = 'block'; // Show kids section
                     document.getElementById('children-dropdown').style.display = 'block'; // Show children dropdown
                     document.getElementById('kids-dropdown').style.display = 'block'; // Show kids dropdown
+
+                    // Enable children and kids dropdown
+                    childrenSelect.removeAttribute('disabled');
+                    kidsSelect.removeAttribute('disabled');
                 }
 
                 updateParticipants(); // Update the participant fields
             }
+
 
             
 
