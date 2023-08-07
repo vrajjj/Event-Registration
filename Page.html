@@ -240,12 +240,12 @@
                     for (var i = existingCount; i < count; i++) {
                         var nameFields = document.createElement('div');
                         nameFields.className = 'name-fields';
-                        nameFields.innerHTML = '<input type=\"text\" placeholder=\"First Name of ' + label + ' ' + (i + 1) +
-                            '\" required><input type=\"text\" placeholder=\"Last Name of ' + label + ' ' + (i + 1) +
-                            '\" required>';
+                        nameFields.innerHTML = '<input type="text" placeholder="First Name of ' + label + ' ' + (i + 1) +
+                            '" required><input type="text" placeholder="Last Name of ' + label + ' ' + (i + 1) +
+                            '" required>';
                         if (sectionId !== 'kids-section' && (checkInTogether === 'Separately' || (sectionId === 'adults-section' && i === 0))) {
-                            nameFields.innerHTML += '<input type=\"email\" placeholder=\"Email of ' + label + ' ' + (i + 1) +
-                                '\" required pattern=\"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}$\">';
+                            nameFields.innerHTML += '<input type="email" placeholder="Email of ' + label + ' ' + (i + 1) +
+                                '" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}$">';
                         }
                         section.appendChild(nameFields);
                     }
@@ -257,6 +257,7 @@
 
                 section.style.display = count > 0 ? 'block' : 'none';
             }
+
 
 
             function updateCheckInQuestion() {
