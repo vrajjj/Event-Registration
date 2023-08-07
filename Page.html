@@ -185,17 +185,21 @@
 
         <script>
             function updateRegistrationType() {
-                var registrationType = document.getElementById('registrationType').value;
-                var checkInQuestion = document.getElementById('checkInQuestion');
+            var registrationType = document.getElementById('registrationType').value;
+            var checkInQuestion = document.getElementById('checkInQuestion');
+            var adultsSelect = document.getElementById('adults');
 
-                if (registrationType === "Family/Group") {
-                    checkInQuestion.style.display = 'block';
-                } else {
-                    checkInQuestion.style.display = 'none';
-                }
-
-                updateParticipants();
+            if (registrationType === "Individual") {
+                checkInQuestion.style.display = 'none';
+                adultsSelect.value = '1'; // Set adults to 1 for Individual
+                adultsSelect.disabled = true; // Disable adults selection for Individual
+            } else {
+                checkInQuestion.style.display = 'block';
+                adultsSelect.disabled = false; // Enable adults selection for Family/Group
             }
+
+            updateParticipants(); // Update the participant fields
+        }
             
 
             function updateParticipants() {
