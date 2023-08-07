@@ -106,6 +106,7 @@
                 <option value="Separately">Separately</option>
             </select>
         </div>
+        
         <label for="adults">Adults (€10 each):</label>
         <select id="adults" name="adults" onchange="updateParticipants();">
             <!-- Options for adults -->
@@ -230,34 +231,33 @@
 
             }
 
-
-
             function createParticipantFields(sectionId, count, label) {
-            var section = document.getElementById(sectionId + '-section');
-            var existingCount = section.getElementsByClassName('name-fields').length;
-            var checkInTogether = document.getElementById('checkInTogether').value;
+                var section = document.getElementById(sectionId + '-section');
+                var existingCount = section.getElementsByClassName('name-fields').length;
+                var checkInTogether = document.getElementById('checkInTogether').value;
 
-            if (count > existingCount) {
-                for (var i = existingCount; i < count; i++) {
-                    var nameFields = document.createElement('div');
-                    nameFields.className = 'name-fields';
-                    nameFields.innerHTML = '<input type="text" placeholder="First Name of ' + label + ' ' + (i + 1) +
-                        '" required><input type="text" placeholder="Last Name of ' + label + ' ' + (i + 1) +
-                        '" required>';
-                    if (sectionId !== 'kids-section' && (checkInTogether === 'Separately' || (sectionId === 'adults-section' && i === 0))) {
-                        nameFields.innerHTML += '<input type="email" placeholder="Email of ' + label + ' ' + (i + 1) +
-                            '" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$">';
+                if (count > existingCount) {
+                    for (var i = existingCount; i < count; i++) {
+                        var nameFields = document.createElement('div');
+                        nameFields.className = 'name-fields';
+                        nameFields.innerHTML = '<input type=\"text\" placeholder=\"First Name of ' + label + ' ' + (i + 1) +
+                            '\" required><input type=\"text\" placeholder=\"Last Name of ' + label + ' ' + (i + 1) +
+                            '\" required>';
+                        if (sectionId !== 'kids-section' && (checkInTogether === 'Separately' || (sectionId === 'adults-section' && i === 0))) {
+                            nameFields.innerHTML += '<input type=\"email\" placeholder=\"Email of ' + label + ' ' + (i + 1) +
+                                '\" required pattern=\"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}$\">';
+                        }
+                        section.appendChild(nameFields);
                     }
-                    section.appendChild(nameFields);
+                } else if (count < existingCount) {
+                    for (var i = existingCount - 1; i >= count; i--) {
+                        section.removeChild(section.getElementsByClassName('name-fields')[i]);
+                    }
                 }
-            } else if (count < existingCount) {
-                for (var i = existingCount - 1; i >= count; i--) {
-                    section.removeChild(section.getElementsByClassName('name-fields')[i]);
-                }
+
+                section.style.display = count > 0 ? 'block' : 'none';
             }
 
-            section.style.display = count > 0 ? 'block' : 'none';
-        }
 
             function updateCheckInQuestion() {
             // Code to handle changes related to the check-in question
